@@ -11,10 +11,11 @@ import { useState, useEffect } from 'react';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import {addDoc, collection, getDocs} from 'firebase/firestore';
 import {db} from './config/firebase';
-import {async} from './components/currency';
+import {async} from '@firebase/util';
 
 import ResetPassword from "./components/forgotPassword";
 import CurrencyConvert from './components/currency';
+
 
 
 
@@ -24,11 +25,37 @@ function App() {
   const [transactions, setTransactions]= useState([]);
 
   const add = (transactionItem, amount, transactionType) =>{
-    setTransactions((transactions) =>[...transactions, {transactionItem:transactionItem, amount:amount, transactionType:transactionType}]);
+    setTransactions((transactions) =>[
+      ...transactions,
+       {transactionItem:transactionItem, 
+        amount:amount,
+         transactionType:transactionType,
+        }
+      ]);
 
-    console.log(transactions);
   };
 
+  useEffect(()=>{
+    getTransaction();
+
+  })
+
+const getTransaction =(async()=>{
+try{
+const querySnapShot = await getDocs(collection(db, "transaction"));
+
+const data = querySnapShot.docs.map((doc)=>({
+  id:doc.id,
+  ...doc.data()
+}))
+setTransactions(data);
+console.log(data)
+
+}catch (error){
+
+}
+
+})
 
 
   return (
@@ -51,6 +78,10 @@ function App() {
 
     <Route path="/forgotpassword">
      <ResetPassword/>  
+    </Route>
+
+    <Route path="/currencyconverter">
+     <CurrencyConvert/>  
     </Route>
 
 

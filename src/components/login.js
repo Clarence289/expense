@@ -13,7 +13,7 @@ const [email, setEmail]= useState('');
 const [password, setpassword] = useState('')
 
 const dispatch = useDispatch();
-    
+  
     return(
 
         <div className='container'>
@@ -21,7 +21,7 @@ const dispatch = useDispatch();
             <input type="text" placeholder="Enter Email" onChange={(event)=>setEmail(event.target.value)}/><br></br>
             <input type="password" placeholder="Enter password" onChange={(event)=>setpassword(event.target.value)}/><br></br>
             <button onClick={()=>dispatch(signIn(email, password))}>Login</button><br></br><br></br>
-            <Link to="/forgotpassword">Forgot password</Link><br></br>
+            <Link to="/forgotpassword">Forgot password</Link>
             <Link to="/SignUp">Don't have an account : Sign Up</Link>
         </div>
     );

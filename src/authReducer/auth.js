@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 import { auth } from '../config/firebase';
-import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from 'firebase/auth';
+import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendPasswordResetEmail } from 'firebase/auth';
 import { useHistory } from 'react-router-dom';
 
 
@@ -39,12 +39,25 @@ export const authSlice = createSlice({
     const errorMessage =error.message;
     console.log(errorMessage);
   });
-}
-
+},
+signingOut: ()=>{
+  signOut(auth)
+  .then(()=>{
+    return true;
+})
+.catch((error)=>{});
+},
+   passwordReset:(state, action)=>{
+    sendPasswordResetEmail(auth, action.payload)
+    .then(()=>{
+      alert("Check your email")
+  })
+  .catch((error)=>{
       
-
+  })
+   }
   },
 });
 
-export const {signUp, signIn, signingOut} =authSlice.actions;
+export const {signUp, signIn, signingOut, passwordReset} =authSlice.actions;
 export default authSlice.reducer
